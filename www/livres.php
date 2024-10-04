@@ -1,6 +1,6 @@
 <?php ob_start() ?>
 
-<h1>Accueil</h1>
+<h1>Livres</h1>
 
 <?php
 
