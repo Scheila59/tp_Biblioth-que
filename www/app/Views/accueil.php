@@ -1,8 +1,8 @@
 <?php ob_start() ?>
 
-<h1>Livres</h1>
+Mon contenu
 
 <?php
-
+$titre = "Accueil";
 $content = ob_get_clean();
 require_once 'template.php';

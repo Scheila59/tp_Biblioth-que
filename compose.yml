@@ -5,7 +5,7 @@ services:
   php:
     build: './php_docker/'
     volumes:
-      - ./www/:/var/www/html
+      - ./www/app/:/var/www/html
 
   # service Apache
   apache:
@@ -15,4 +15,4 @@ services:
     ports:
       - '8080:80'
     volumes:
-      - ./www/:/var/www/html
+      - ./www/app/:/var/www/html
