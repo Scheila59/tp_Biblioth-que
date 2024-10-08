@@ -1,0 +1,14 @@
+{
+  "name": "christophe/biblio_en_cours",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Christophe Le Goff"
+    }
+  ],
+  "require": {}
+}

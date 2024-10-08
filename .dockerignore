@@ -1,1 +1,6 @@
-/www/app/vendor/
+/vendor/
+/.gitignore
+/.dockerignore
+/composer.lock
+/compose.yml
+/Dockerfile

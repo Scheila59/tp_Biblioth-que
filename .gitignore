@@ -1,1 +1,4 @@
-/www/app/vendor/
+/vendor/
+/composer.lock
+/.env
+/Database/
