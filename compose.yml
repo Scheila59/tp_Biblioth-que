@@ -6,7 +6,7 @@ services:
     container_name: biblio
     volumes:
       - ./:/var/www/html/
-      - '/var/www/html/vendor' # Prevents first volume from overwriting vendor directory.
+      # - '/var/www/html/vendor' # Prevents first volume from overwriting vendor directory.
     ports:
       - '8000:80'
 
