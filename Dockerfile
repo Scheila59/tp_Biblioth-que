@@ -39,3 +39,6 @@ RUN a2enmod rewrite
 
 # Run composer Install
 RUN composer install
+
+# Custom php.ini config
+COPY custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini

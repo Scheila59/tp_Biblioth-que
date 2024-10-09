@@ -1,8 +1,8 @@
 <?php ob_start() ?>
 
 <div style ="display: block">
-<p>Le contenu n'est plus disponible</p>
-<p>Contacter l'administrateur : <a href = "mailto:contact@monsite.fr" >ici</a></p>
+<p><?= $message ?> &nbsp;</p>
+<p> Contacter l'administrateur : <a href = "mailto:contact@monsite.fr" >ici</a></p>
 </div>
 <?php
 $titre = "Accueil";

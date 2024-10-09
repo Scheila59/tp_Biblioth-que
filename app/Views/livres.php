@@ -22,6 +22,8 @@
 
 <?php ob_start() ?>
 
+<?php if(!$pasDeLivre) : ?>
+
 <table class="table test-center">
     <tr class="table-dark">
         <th>Image</th>
@@ -40,14 +42,31 @@
         </td>
         <td class="align-middle"><?= $livre->getNbreDePages(); ?> </td>
         <td class="align-middle"><a href="#" class="btn btn-warning">Modifier</a> </td>
-        <td class="align-middle"><a href="#" class="btn btn-danger">Supprimer</a> </td>
+        <td class="align-middle">
+            <form method="post" action="<?= SITE_URL ?>livres/s/<?= $livre->getId() ?>" onSubmit="return confirm('Voulez-vous vraiment supprimer le livre <?= $livre->getId(); ?> ?');">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>  
+        </td>
     </tr>
     <?php endforeach; ?> 
     <!-- // fermeture -->
 </table>
-<a href="#" class="btn btn-success d-block w-100">Ajouter</a>
-
+<a href="<?= SITE_URL ?>livres/a" class="btn btn-success d-block w-100">Ajouter</a>
+<?php else : ?>
+    <div class="d-flex flex-column">
+        <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+            <div class="card-header">Votre espace</div>
+            <div class="card-body">
+                <h4 class="card-title">Désolé</h4>
+                <p class="card-text">Il semble que vous n'ayez pas encore uploadé de livre dans votre espace.</p>
+                <p class="card-text">Pour y remédier, utilisez le bouton ci-dessous...</p>
+            </div>
+        </div>
+        <a href="<?= SITE_URL ?>livres/a" class="btn btn-success d-block w-100">Ajouter</a>
+    </div>
+    <?php endif; ?>
 <?php
+
 
 $titre = "Livres";
 $content = ob_get_clean();
