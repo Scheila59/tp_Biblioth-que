@@ -2,7 +2,7 @@
 
 <div class="row w-100">
     <div class="col-6">
-        <img style='max-width:100%;' src="<?= SITE_URL ?>images/<?= $livre->getUrlImage() ?>" alt="<?= $livre->getTextAlternatif() ?>">
+        <img style='max-width:80%;' src="<?= SITE_URL ?>images/<?= $livre->getUrlImage() ?>" alt="<?= $livre->getTextAlternatif() ?>">
     </div>
     <div class="col-6">
         <p>Titre : <?= $livre->getTitre() ?></p>

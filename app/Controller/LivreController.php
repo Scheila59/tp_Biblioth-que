@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\livresRepository;
-use Exception;
+use App\Service\Utils;
+use App\Service\ValidationDonnees;
 
 class LivreController
 {
-    private $repositoryLivres;
+    private livresRepository $repositoryLivres;
+    private ValidationDonnees $validationDonnees;
 
     public function __construct(){
         $this->repositoryLivres = new livresRepository;
         $this->repositoryLivres->chargementLivresBdd();
+        $this->validationDonnees = new ValidationDonnees();
     }
 
     public function afficherLivres() {
@@ -32,12 +35,43 @@ class LivreController
     }
 
     public function validationAjoutLivre()
-    {        
+    {   
+        $erreurs = $this->validationDonnees->valider([
+            'titre' => ['required', 'match:/^[A-Z][a-z\- ]+$/'],
+            'nbre-de-pages' =>['min:1', 'max:11']
+        ], $_POST);
+
+        if (is_array($erreurs) && count($erreurs) > 0) {
+            $_SESSION['erreurs'][] = $erreurs;
+            header('location: ' . SITE_URL . 'livres/a');
+            exit;
+        }
         $image = $_FILES["image"]; // on recupere l'image
         $repertoire = "images/"; // on stocke l'image
-        $nomImage = $this->ajoutImage($image, $repertoire);
+        $nomImage = Utils::ajoutImage($image, $repertoire);
         $this->repositoryLivres->ajouterLivreBdd($_POST['titre'],(int)$_POST['nbre-de-pages'], $_POST['text-alternatif'], $nomImage); 
         header('location: ' . SITE_URL . 'livres');     
+    }
+
+    public function modifierLivre($idLivre) {
+        $livre = $this->repositoryLivres->getLivreById($idLivre);
+        require '../app/Views/modifierLivre.php';
+    }
+
+    public function validationModifierLivre() {
+        $idLivre = (int)$_POST['id_livre'];
+        $imageActuelle = $this->repositoryLivres->getLivreById($idLivre)->getUrlImage();
+        $imageUpload = $_FILES['image'];
+        $cheminImage = "images/$imageActuelle";
+        if($imageUpload['size'] > 0) {
+            if (file_exists($cheminImage)) {
+                unlink($cheminImage);
+            }
+            $imageActuelle = Utils::ajoutImage($imageUpload, "images/");
+        } 
+        $this->repositoryLivres->modificationLivreBdd($_POST['titre'],(int)$_POST['nbre-de-pages'], $_POST['text-alternatif'], $imageActuelle, 
+    $idLivre); 
+        header('location: ' . SITE_URL . 'livres');
     }
 
     public function supprimerLivre($idLivre) {
@@ -46,33 +80,5 @@ class LivreController
         if (file_exists($filename)) unlink($filename);
         $this->repositoryLivres->supprimerLivreBdd($idLivre);
         header('location: ' . SITE_URL . 'livres');
-    }
-
-    public function ajoutImage($image, $repertoire) {
-        if (!isset($_FILES['image']) || empty($_FILES['image']))
-        throw new Exception("Vous devez uploader une image pour l'ajout du livre");
-
-        if(!file_exists($repertoire)) mkdir($repertoire, 0777);
-
-        $filename = uniqid() . "_" . $image['name']; // donne un id unique + le nom de l'image uploadé
-        $target = $repertoire . $filename;
-
-        if (!getimagesize($image['tmp_name']))
-            throw new Exception('Vous devez uploader une image et pas autre chose!!');
-
-        $extension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-        //echo $extension;
-        $extensionsTab = ['png', 'webp', 'jpg', 'jpeg'];
-
-        if (!in_array($extension, $extensionsTab))
-        throw new Exception("Extension non autorisée => ['png', 'webp', 'jpg', 'jpeg]");
-
-        if ($image['size'] > 4000000) // est égale a 4MO
-            throw new Exception("Fichier trop volumineux : max 4MO");
-
-        if (!move_uploaded_file($image['tmp_name'], $target))
-        throw new Exception("Le transfert de l'image à échoué");
-    else 
-        return $filename;
-    }
+    }    
 }

@@ -51,7 +51,17 @@ class livresRepository extends AbstractConnexion
         $stmt->bindValue(":text_alternatif", $textAlternatif, PDO::PARAM_STR);
         $stmt->execute();
         $stmt->closeCursor();
-
+    }
+    public function modificationLivreBdd(string $titre, int $nbreDePages, string $textAlternatif, string $nomImage, int $idLivre) {
+        $req = "UPDATE livre SET titre = :titre, nbre_De_Pages = :nbre_De_Pages, text_Alternatif = :text_Alternatif, url_Image = :url_Image WHERE id_livre = :id_livre";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindValue("id_livre", $idLivre, PDO::PARAM_INT);
+        $stmt->bindValue(":titre", $titre, PDO::PARAM_STR);
+        $stmt->bindValue(":nbre_De_Pages", $nbreDePages, PDO::PARAM_INT);
+        $stmt->bindValue(":url_Image", $nomImage, PDO::PARAM_STR);
+        $stmt->bindValue(":text_Alternatif", $textAlternatif, PDO::PARAM_STR);
+        $stmt->execute();
+        $stmt->closeCursor();
     }
 
     public function supprimerLivreBdd($idLivre) {

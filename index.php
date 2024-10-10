@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-
+session_start();
 use App\Controller\LivreController;
 use \Dotenv\Dotenv;
 
@@ -31,7 +31,9 @@ try {
                 }  else if ($url[1] === 'av') {
                     $livreController->validationAjoutLivre();
                 } else if ($url[1] === 'm') {
-                    //echo "modification d'un livre";
+                    $livreController->modifierLivre((int)$url[2]);
+                } else if ($url[1] === 'mv') {
+                    $livreController->validationModifierLivre();
                 }  else if ($url[1] === 's') {
                     $livreController->supprimerLivre((int)$url[2]);
                 } else {
