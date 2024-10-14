@@ -1,14 +1,14 @@
-const preview = document.querySelector('#image-preview');
-const input = document.querySelector('#image');
+const preview = document.querySelector('#image-preview'); // sélectionner l'image
+const input = document.querySelector('#image'); // sélectionner l'input
 
 input.addEventListener('change', ()=> previewImage())
 
-const previewImage = () => {
-    const file = input.files[0];
-    if (file) {
-        const fileReader = new FileReader();
-        fileReader.onload = (e) => {
-            preview.setAttribute("src", e.target.result);
+const previewImage = () => { // fonction pour afficher l'image
+    const file = input.files[0]; // récupérer le fichier
+    if (file) { // si le fichier existe
+        const fileReader = new FileReader(); // créer un lecteur de fichier
+        fileReader.onload = (e) => { // lire le fichier
+            preview.setAttribute("src", e.target.result); // afficher l'image
         };
         fileReader.readAsDataURL(file);
     }   

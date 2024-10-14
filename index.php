@@ -3,6 +3,7 @@
 declare(strict_types=1);
 session_start();
 use App\Controller\LivreController;
+use App\Controller\UtilisateurController;
 use \Dotenv\Dotenv;
 
 $dotenv = Dotenv::createMutable(__DIR__);
@@ -13,7 +14,11 @@ require __DIR__ . '/app/lib/functions.php';
 // debug(dirname(__DIR__)); 
 ?>
 <?php
+// password hash sert à créer un mot de passe hashé(decomposé par un algorithme)
+// echo password_hash('12345', PASSWORD_BCRYPT);
+
 $livreController = new LivreController;
+$utilisateurController = new UtilisateurController;
 try {
     // debug($_GET, $mode = 0);
     if (empty($_GET['page'])) {
@@ -39,6 +44,13 @@ try {
                 } else {
                     throw new Exception("La page n'existe pas");
                 }                
+                break;
+            case 'login':
+                if (empty($url[1])) {
+                    $utilisateurController->afficherConnexion();
+                } elseif ($url[1] === 'v') {
+                    $utilisateurController->connexionValidation();
+                }
                 break;
             default:
                 throw new Exception("La page n'existe pas");

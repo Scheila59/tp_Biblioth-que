@@ -1,30 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types=1); // on déclare que les types des variables sont stricts
 
-namespace App\Models;
+namespace App\Models; // on définit l'espace de nom de la classe
 
 
-class Livre
+class Livre // classe qui représente un livre
 {
-    private int $id;
-    private string $titre;
-    private int $nbreDePages;
-    private string $urlImage;
-    private string $textAlternatif;
+    private int $id; // propriété qui représente l'identifiant du livre
+    private string $titre; // propriété qui représente le titre du livre
+    private int $nbreDePages; // propriété qui représente le nombre de pages du livre
+    private string $urlImage; // propriété qui représente l'url de l'image du livre
+    private string $textAlternatif; // propriété qui représente le texte alternatif de l'image du livre
 
-    public function __construct(
-        int $id,
-        string $titre,
-        int $nbreDePages,
-        string $urlImage,
-        string $textAlternatif
+    public function __construct( // constructeur de la classe Livre
+        int $id, // paramètre qui représente l'identifiant du livre
+        string $titre, // paramètre qui représente le titre du livre
+        int $nbreDePages, // paramètre qui représente le nombre de pages du livre
+        string $urlImage, // paramètre qui représente l'url de l'image du livre
+        string $textAlternatif // paramètre qui représente le texte alternatif de l'image du livre
     ) {
-        $this->id = $id;
-        $this->titre = $titre;
-        $this->nbreDePages = $nbreDePages;
-        $this->urlImage = $urlImage;
-        $this->textAlternatif = $textAlternatif;
+        $this->id = $id; // on affecte la valeur de l'identifiant du livre à la propriété id
+        $this->titre = $titre; // on affecte la valeur du titre du livre à la propriété titre
+        $this->nbreDePages = $nbreDePages; // on affecte la valeur du nombre de pages du livre à la propriété nbreDePages
+        $this->urlImage = $urlImage; // on affecte la valeur de l'url de l'image du livre à la propriété urlImage
+        $this->textAlternatif = $textAlternatif; // on affecte la valeur du texte alternatif de l'image du livre à la propriété textAlternatif
     }
 
     /**
@@ -32,9 +32,9 @@ class Livre
      *
      * @return int
      */
-    public function getId(): int
+    public function getId(): int // méthode qui permet de récupérer l'identifiant du livre
     {
-        return $this->id;
+        return $this->id; // on retourne la valeur de la propriété id
     }
 
     /**
