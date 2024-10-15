@@ -30,6 +30,21 @@ class livresRepository extends AbstractConnexion // classe livresRepository qui 
             $newLivre = new Livre($livre['id_livre'], $livre['titre'],$livre['nbre_De_Pages'], $livre['url_Image'], $livre['text_Alternatif']);
             $this->ajouterLivre($newLivre);
         }
+        return $this->getLivres();
+    }
+
+    public function getLivresByIdUtilisateur($idUtilisateur){ 
+        
+        $req = $this->getConnexionBdd()->prepare("SELECT * FROM livre
+        WHERE id_utilisateur = ?" );
+        $req->execute([$idUtilisateur]); 
+        $livresImportes = $req->fetchALL(PDO::FETCH_ASSOC); 
+        $req->closeCursor(); 
+        foreach($livresImportes as $livre) { 
+            $newLivre = new Livre($livre['id_livre'], $livre['titre'],$livre['nbre_De_Pages'], $livre['url_Image'], $livre['text_Alternatif']);
+            $this->ajouterLivre($newLivre);
+        }
+        return $this->getLivres();
     }
 
     public function getLivreById($idLivre) { // méthode pour récupérer un livre par son id
@@ -42,17 +57,20 @@ class livresRepository extends AbstractConnexion // classe livresRepository qui 
     }
     public function ajouterLivreBdd(string $titre, int $nbreDePages, string $textAlternatif, string $nomImage) {
         // protection injection sql requête SQL pour ajouter un livre
-        $req = "INSERT INTO livre (titre, nbre_De_Pages, url_Image ,text_Alternatif)VALUES 
-        (:titre, :nbre_de_pages, :url_image, :text_alternatif)";
+        $idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];
+        $req = "INSERT INTO livre (titre, nbre_De_Pages, url_Image ,text_Alternatif, id_utilisateur)VALUES 
+        (:titre, :nbre_de_pages, :url_image, :text_alternatif, :id_utilisateur)";
         $stmt = $this->getConnexionBdd()->prepare($req); // préparation de la requête
         $stmt->bindValue(":titre", $titre, PDO::PARAM_STR); // liaison de la valeur du titre avec le paramètre titre
         $stmt->bindValue(":nbre_de_pages", $nbreDePages, PDO::PARAM_INT); // liaison de la valeur du nombre de pages avec le paramètre nbre_de_pages
         $stmt->bindValue(":url_image", $nomImage, PDO::PARAM_STR); // liaison de la valeur de l'url de l'image avec le paramètre url_image
         $stmt->bindValue(":text_alternatif", $textAlternatif, PDO::PARAM_STR); // liaison de la valeur du texte alternatif avec le paramètre text_alternatif
+        $stmt->bindValue(":id_utilisateur", $idUtilisateur, PDO::PARAM_INT);
         $stmt->execute(); // exécution de la requête
         $stmt->closeCursor(); // fermeture du curseur 
     }
     public function modificationLivreBdd(string $titre, int $nbreDePages, string $textAlternatif, string $nomImage, int $idLivre) { // méthode pour modifier un livre
+        $idUtilisateur = $_SESSION['utilisateur']['id_utilisateur'];
         $req = "UPDATE livre SET titre = :titre, nbre_De_Pages = :nbre_De_Pages, text_Alternatif = :text_Alternatif, url_Image = :url_Image WHERE id_livre = :id_livre"; // requête SQL pour modifier un livre
         $stmt = $this->getConnexionBdd()->prepare($req); // préparation de la requête
         $stmt->bindValue("id_livre", $idLivre, PDO::PARAM_INT); // liaison de la valeur de l'id du livre avec le paramètre id_livre
@@ -60,6 +78,7 @@ class livresRepository extends AbstractConnexion // classe livresRepository qui 
         $stmt->bindValue(":nbre_De_Pages", $nbreDePages, PDO::PARAM_INT); // liaison de la valeur du nombre de pages avec le paramètre nbre_De_Pages
         $stmt->bindValue(":url_Image", $nomImage, PDO::PARAM_STR); // liaison de la valeur de l'url de l'image avec le paramètre url_Image
         $stmt->bindValue(":text_Alternatif", $textAlternatif, PDO::PARAM_STR); // liaison de la valeur du texte alternatif avec le paramètre text_Alternatif
+        $stmt->bindValue(":id_utilisateur", $idUtilisateur, PDO::PARAM_INT); 
         $stmt->execute(); // exécution de la requête
         $stmt->closeCursor(); // fermeture du curseur 
     }

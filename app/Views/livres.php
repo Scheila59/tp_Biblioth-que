@@ -1,29 +1,7 @@
-<?php
-
-
-// use App\Repository\livresRepository;
-
-
-
-// $repositoryLivres = new livresRepository;
-// $repositoryLivres->chargementLivresBdd();
-
-// $l1 = new ModelsLivre(1, "In My Head", 567, "in-my-head.png", "Image de couverture du livre in my head");
-// $repositoryLivres->ajouterLivre($l1);
-// $l2 = new ModelsLivre(2, "Le dev fou", 5676, "le_dev_fou.png", "Image de couverture du livre le dev fou");
-// $repositoryLivres->ajouterLivre($l2);
-// $l3 = new ModelsLivre(3, "Mon futur site web", 57, "mon-futur-site-web.png", "Image de couverture du livre mon futur site web");
-// $repositoryLivres->ajouterLivre($l3);
-
-// $livres = [$l1, $l2, $l3];
-
-
-?>
-
 <?php ob_start() ?> <!-- démarrer la temporisation de sortie -->
 
 <?php if(!$pasDeLivre) : ?> <!-- si il y a des livres -->
-
+<?php require '../app/Views/showAlert.php'; ?>
 <table class="table test-center"> <!-- créer un tableau -->
     <tr class="table-dark"> <!-- créer une ligne -->
         <th>Image</th> <!-- créer une colonne -->

@@ -24,10 +24,10 @@ class Utils
 
         $extension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)); 
         //echo $extension;
-        $extensionsTab = ['png', 'webp', 'jpg', 'jpeg']; // tableau des extensions autorisées
+        $extensionsTab = ['png', 'jpg', 'jpeg']; // tableau des extensions autorisées
 
         if (!in_array($extension, $extensionsTab)) // si l'extension n'est pas dans le tableau des extensions autorisées
-        throw new Exception("Extension non autorisée => ['png', 'webp', 'jpg', 'jpeg]"); // exception si l'extension n'est pas autorisée
+        throw new Exception("Extension non autorisée => [ 'webp']"); // exception si l'extension n'est pas autorisée
 
         if ($image['size'] > 4000000) // est égale a 4MO
             throw new Exception("Fichier trop volumineux : max 4MO"); 

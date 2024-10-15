@@ -7,39 +7,54 @@ namespace App\Controller;
 use App\Repository\livresRepository;
 use App\Service\Utils;
 use App\Service\ValidationDonnees;
-
+use App\Controller\UtilisateurController;
 class LivreController
 {
     private livresRepository $repositoryLivres;
     private ValidationDonnees $validationDonnees;
+    private UtilisateurController $utilisateurController;
 
     public function __construct()
     { // constructeur
         $this->repositoryLivres = new livresRepository; // on crée un objet de type livresRepository
-        $this->repositoryLivres->chargementLivresBdd(); // on charge les livres dans la BDD
         $this->validationDonnees = new ValidationDonnees(); // on crée un objet de type ValidationDonnees
+        $this->utilisateurController = new UtilisateurController(); // on crée un objet de type UtilisateurController
+        $isAdmin = $this->utilisateurController->isRoleAdmin();
+        $isUser = $this->utilisateurController->isRoleUser();
+        if ($isAdmin) {
+            $this->repositoryLivres->chargementLivresBdd();
+        } elseif ($isUser) {
+            $livresTab = $this->repositoryLivres->getLivresByIdUtilisateur($_SESSION['utilisateur']['id_utilisateur']);
+        }  // else {
+            // header('location: ' . SITE_URL . 'login');
+            // exit;
+        // }
     }
 
     public function afficherLivres()
-    { // fonction qui affiche la liste des livres
-        $livresTab = $this->repositoryLivres->getLivres(); // on récupère les livres
-        $pasDeLivre = (count($livresTab) > 0) ? false : true; // on vérifie si il y a des livres
-        require "../app/Views/livres.php"; // on affiche la page
+    {       
+        $this->utilisateurController->redirectLogin();
+        $livresTab = $this->repositoryLivres->getLivres();
+        $pasDeLivre = (count($livresTab) > 0) ? false : true;
+        require "../app/Views/livres.php";
     }
 
     public function afficherUnLivre($idLivre)
     { // fonction qui affiche un livre
+        $this->utilisateurController->redirectLogin();
         $livre = $this->repositoryLivres->getLivreById($idLivre); // on récupère le livre
         ($livre !== null) ? require "../app/Views/afficherLivre.php" : require "../app/Views/error404.php"; // on affiche la page
     }
 
     public function ajouterLivre()
     {
+        $this->utilisateurController->redirectLogin();
         require '../app/Views/ajouterLivre.php'; // on affiche la page
     }
 
     public function validationAjoutLivre() // fonction qui valide les données d'ajout d'un livre
     {
+        $this->utilisateurController->redirectLogin();
         $erreurs = $this->validationDonnees->valider([ // on valide les données
             //'titre' => ['min:3']   
             'titre' => ['match:/^[A-Z][a-zA-Z\- ]{3,25}$/'], // on valide le titre sous certaines conditions
@@ -56,17 +71,23 @@ class LivreController
         $repertoire = "images/"; // on stocke l'image
         $nomImage = Utils::ajoutImage($image, $repertoire);  // on ajoute l'image
         $this->repositoryLivres->ajouterLivreBdd($_POST['titre'], (int)$_POST['nbre-de-pages'], $_POST['text-alternatif'], $nomImage);  // on enregistre le livre dans la BDD
+        $_SESSION['alert'] = [
+            "type" => "success",
+            "message" => "Le livre $_POST[titre] a été ajouté avec succès!"
+        ];
         header('location: ' . SITE_URL . 'livres');  // on redirige vers la page livres  
     }
 
     public function modifierLivre($idLivre)
     { // fonction qui permet de modifier un livre
+        $this->utilisateurController->redirectLogin();
         $livre = $this->repositoryLivres->getLivreById($idLivre); // on récupère le livre
         require '../app/Views/modifierLivre.php'; // on affiche la page
     }
 
     public function validationModifierLivre()
     { // fonction qui valide les données de modification d'un livre
+        $this->utilisateurController->redirectLogin();
         $erreurs = $this->validationDonnees->valider([ // on valide les données
             //'titre' => ['min:3']   
             'titre' => ['match:/^[A-Z][a-zA-Z\- ]{3,25}$/'],
@@ -101,6 +122,7 @@ class LivreController
 
     public function supprimerLivre($idLivre)
     { // fonction qui permet de supprimer un livre
+        $this->utilisateurController->redirectLogin();
         // Récupère le nom de l'image associée au livre à supprimer
         $nomImage = $this->repositoryLivres->getLivreById($idLivre)->getUrlImage();
         // Crée le chemin complet du fichier image en utilisant le nom de l'image

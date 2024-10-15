@@ -20,7 +20,18 @@ class UtilisateurController
 
     public function afficherConnexion()
     {
+        if ($this->isRoleAdmin() || $this->isRoleUser()) {
+            header('location: ' . SITE_URL . 'livres');
+        }
         require '../app/Views/afficherConnexion.php';
+    }
+
+    public function logout()
+    {
+        if (isset($_SESSION['utilisateur'])) {
+            unset($_SESSION['utilisateur']);
+        }
+        header('location: ' . SITE_URL . '');
     }
 
     public function connexionValidation()
@@ -42,8 +53,15 @@ class UtilisateurController
         //debug($utilisateur);
         // verification email et du mot de passe
         if ($utilisateur) {
-            if (password_verify($_POST['password'], $utilisateur->getPassword())) {
-                echo 'Connexion réussie';
+            if (password_verify($_POST['password'], $utilisateur->getPassword())) { // on vérifie le mot de passe
+                $_SESSION['utilisateur']['id_utilisateur'] = $utilisateur->getIdUtilisateur(); // on met l'utilisateur en session
+                $_SESSION['utilisateur']['email'] = $utilisateur->getEmail(); 
+                $_SESSION['utilisateur']['role'] = $utilisateur->getRole();
+                header('location: ' . SITE_URL . 'livres');
+            } else {
+                $_SESSION['erreurs'][] =[['email' => 'Email ou mot de passe incorrect']];
+                header('location: ' . SITE_URL . 'login'); // on redirige vers la page d'ajout
+                exit;
             }
         } else {
             $_SESSION['erreurs'][] =[['email' => 'Email ou mot de passe incorrect']];
@@ -51,4 +69,29 @@ class UtilisateurController
             exit;
         }
     }
-}
+
+    public function isRoleUser(): bool {
+       if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'ROLE_USER'){
+        return true;
+       }
+       return false;
+    }
+
+    public function isRoleAdmin(): bool 
+    {
+        if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'ROLE_ADMIN') {
+            return true;
+        }
+        return false; 
+    }
+
+    public function redirectLogin()
+    {
+        $isAdmin = $this->isRoleAdmin();
+        $isUser = $this->isRoleUser();
+        if (!$isAdmin && !$isUser) {
+            header('location: ' . SITE_URL . 'login');
+            exit;
+        }
+    }
+}    

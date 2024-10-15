@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 session_start();
+
 use App\Controller\LivreController;
 use App\Controller\UtilisateurController;
 use \Dotenv\Dotenv;
@@ -15,7 +16,7 @@ require __DIR__ . '/app/lib/functions.php';
 ?>
 <?php
 // password hash sert à créer un mot de passe hashé(decomposé par un algorithme)
-// echo password_hash('12345', PASSWORD_BCRYPT);
+// echo password_hash('12345', PASSWORD_BCRYPT); S65dghsfhg-qd!fhsJ ( quand je veux me connecter je met le mdp en clair)
 
 $livreController = new LivreController;
 $utilisateurController = new UtilisateurController;
@@ -33,17 +34,17 @@ try {
                     $livreController->afficherUnLivre((int)$url[2]);
                 } else if ($url[1] === 'a') {
                     $livreController->ajouterLivre();
-                }  else if ($url[1] === 'av') {
+                } else if ($url[1] === 'av') {
                     $livreController->validationAjoutLivre();
                 } else if ($url[1] === 'm') {
                     $livreController->modifierLivre((int)$url[2]);
                 } else if ($url[1] === 'mv') {
                     $livreController->validationModifierLivre();
-                }  else if ($url[1] === 's') {
+                } else if ($url[1] === 's') {
                     $livreController->supprimerLivre((int)$url[2]);
                 } else {
                     throw new Exception("La page n'existe pas");
-                }                
+                }
                 break;
             case 'login':
                 if (empty($url[1])) {
@@ -52,9 +53,12 @@ try {
                     $utilisateurController->connexionValidation();
                 }
                 break;
+            case 'logout':
+                $utilisateurController->logout();
+                break;
             default:
                 throw new Exception("La page n'existe pas");
-                break; 
+                break;
         }
     }
 } catch (Exception $e) {
