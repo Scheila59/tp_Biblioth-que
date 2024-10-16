@@ -1,7 +1,8 @@
 <?php ob_start() ?> <!-- démarrer la temporisation de sortie -->
 
-<?php if(!$pasDeLivre) : ?> <!-- si il y a des livres -->
-<?php require '../app/Views/showAlert.php'; ?>
+<?php if (!$pasDeLivre) :
+    ?> <!-- si il y a des livres -->
+    <?php require '../app/Views/showAlert.php'; ?>
 <table class="table test-center"> <!-- créer un tableau -->
     <tr class="table-dark"> <!-- créer une ligne -->
         <th>Image</th> <!-- créer une colonne -->
@@ -10,8 +11,8 @@
         <th colspan="2">Actions</th> <!-- créer une colonne -->
     </tr>
     <?php
-    // $livresTab = $repositoryLivres->getLivres();  
-     foreach($livresTab as $livre) : ?> 
+    // $livresTab = $repositoryLivres->getLivres();
+    foreach ($livresTab as $livre) : ?> 
          <!-- : => signifie en attente de la fermeture  -->
     <tr>
         <td class="align-middle"><img src="images/<?= $livre->getUrlImage(); ?>" style="height: 60px;" ; alt="<?= $livre->getTextAlternatif(); ?>"></td> <!-- afficher l'image du livre -->
@@ -44,7 +45,7 @@
         </div>
         <a href="<?= SITE_URL ?>livres/a" class="btn btn-success d-block w-100">Ajouter</a>
     </div>
-    <?php endif; ?>
+<?php endif; ?>
 <?php
 
 

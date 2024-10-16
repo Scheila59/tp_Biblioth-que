@@ -7,6 +7,7 @@
     <div class="col-6">
         <p>Titre : <?= $livre->getTitre() ?></p>
         <p>Nombre de pages : <?= $livre->getNbreDePages() ?></p>
+        <p>Uploader : <?= $livre->getUploader() ?></p>
     </div>
 </div>
 

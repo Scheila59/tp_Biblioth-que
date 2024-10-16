@@ -1,16 +1,20 @@
 <?php
 
-declare(strict_types=1); // déclaration du type strict
+declare(strict_types=1);
 
-namespace App\Service; 
+// déclaration du type strict
+
+namespace App\Service;
 
 class ValidationDonnees
 {
     private array $erreurs = []; // tableau de données contenant les erreurs
 
-    public function valider(array $regles, array $datas) { // fonction qui valide les données
-        foreach ($regles as $key => $regleTab) // pour chaque règle de validation
-            if(array_key_exists($key, $datas)) { // si la clé existe dans les données
+    public function valider(array $regles, array $datas)
+    {
+ // fonction qui valide les données
+        foreach ($regles as $key => $regleTab) { // pour chaque règle de validation
+            if (array_key_exists($key, $datas)) { // si la clé existe dans les données
                 foreach ($regleTab as $regle) { // pour chaque règle de validation
                     switch ($regle) { // on effectue la validation en fonction du type de règle
                         case 'required': // si la règle est "required"
@@ -25,9 +29,10 @@ class ValidationDonnees
                     }
                 }
             }
-    return $this->getErreurs(); // on retourne les erreurs
+        }
+        return $this->getErreurs(); // on retourne les erreurs
     }
-    
+
     public function required(string $name, string|int|bool $data) // fonction qui valide si un champ est requis
     {
         $value = trim($data); // on nettoie le champ
@@ -36,7 +41,7 @@ class ValidationDonnees
         }
     }
 
-    private function min(string $name, string $value, string $regle): void 
+    private function min(string $name, string $value, string $regle): void
     {
         // preg_match_all('/(\d+)/', $regle, $matches);
         // $limit = $matches[0][0]; // => 3
@@ -59,7 +64,7 @@ class ValidationDonnees
                     $this->erreurs[$name][] = "Le champ {$name} doit être un email valide"; // on ajoute l'erreur au tableau
                     break;
                 case 'titre': // si le champ est "titre"
-                    $this->erreurs[$name][] = "Le champ {$name} doit commencer par une lettre majuscule, contenir minimum 3 lettres et maximum 20 lettres, espaces et '-'(tiret du 6) autorisés"; // on ajoute l'erreur au tableau
+                    $this->erreurs[$name][] = "Le champ {$name} doit commencer par une lettre majuscule, contenir minimum 3 lettres et maximum 50 lettres, espaces et '-'(tiret du 6) autorisés"; // on ajoute l'erreur au tableau
                     break;
                 case 'nbre-de-pages': // si le champ est "nbre-de-pages"
                     $this->erreurs[$name][] = "Le champ {$name} doit contenir uniquement des chiffres, [min: 1 - max: 10]";
@@ -69,14 +74,14 @@ class ValidationDonnees
                     break;
             }
         }
-        
     }
     /**
      * Get the value of erreurs
      *
      * @return array
      */
-    public function getErreurs(): array {
+    public function getErreurs(): array
+    {
         return $this->erreurs;
     }
 }

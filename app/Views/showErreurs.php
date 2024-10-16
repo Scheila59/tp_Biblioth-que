@@ -12,4 +12,4 @@
             echo $divErreur; // afficher les erreurs
         }
     }
-} ?>
+}

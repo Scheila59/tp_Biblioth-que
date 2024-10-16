@@ -20,6 +20,7 @@
         <input type="file" class="form-control" id="image" name="image"></input> <!-- créer un champ pour l'image -->
     </div>
     <img src="" id="image-preview" style='max-width:80%;' alt=""> <!-- afficher l'image -->
+    <?= $csrfToken ?>
     <button class="btn btn-secondary">Créer livre</button> <!-- créer un bouton pour créer le livre -->
 </form>
 

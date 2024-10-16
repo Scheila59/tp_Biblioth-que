@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 namespace App\Repository;
+
 use App\Models\Utilisateur;
 use PDO;
 use App\Service\AbstractConnexion;
 
-
-class UtilisateurRepository  extends AbstractConnexion
+class UtilisateurRepository extends AbstractConnexion
 {
     private Utilisateur $utilisateur;
 
@@ -28,13 +28,15 @@ class UtilisateurRepository  extends AbstractConnexion
         }
     }
 
-    
-    public function getUtilisateur(): Utilisateur {
+
+    public function getUtilisateur(): Utilisateur
+    {
         return $this->utilisateur;
     }
 
-    
-    public function setUtilisateur(Utilisateur $utilisateur): self {
+
+    public function setUtilisateur(Utilisateur $utilisateur): self
+    {
         $this->utilisateur = $utilisateur;
         return $this;
     }

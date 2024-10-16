@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="Mon projet">
+    <rule ref="PSR12"/>
+    <arg name="colors"/>
+    <arg value="p" />
+    <file>index.php</file>
+    <file>app</file>
+</ruleset>

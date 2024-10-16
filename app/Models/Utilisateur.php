@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
 namespace App\Models;
 
-class Utilisateur 
+class Utilisateur
 {
     private int $id_utilisateur;
     private string $identifiant;
@@ -19,59 +19,69 @@ class Utilisateur
         $this->password = $password;
         $this->email = $email;
         $this->role = $role;
-    }  
-    
-    
-    public function getIdUtilisateur(): int {
+    }
+
+
+    public function getIdUtilisateur(): int
+    {
         return $this->id_utilisateur;
     }
 
-    
-    public function setIdUtilisateur(int $id_utilisateur): self {
+
+    public function setIdUtilisateur(int $id_utilisateur): self
+    {
         $this->id_utilisateur = $id_utilisateur;
         return $this;
     }
 
-    
-    public function getIdentifiant(): string {
+
+    public function getIdentifiant(): string
+    {
         return $this->identifiant;
     }
 
-    
-    public function setIdentifiant(string $identifiant): self {
+
+    public function setIdentifiant(string $identifiant): self
+    {
         $this->identifiant = $identifiant;
         return $this;
     }
 
-    
-    public function getPassword(): string {
+
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    
-    public function setPassword(string $password): self {
+
+    public function setPassword(string $password): self
+    {
         $this->password = $password;
         return $this;
     }
 
-    
-    public function getEmail(): string {
+
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
-    
-    public function setEmail(string $email): self {
+
+    public function setEmail(string $email): self
+    {
         $this->email = $email;
         return $this;
     }
 
-    
-    public function getRole(): string {
+
+    public function getRole(): string
+    {
         return $this->role;
     }
 
-    
-    public function setRole(string $role): self {
+
+    public function setRole(string $role): self
+    {
         $this->role = $role;
         return $this;
     }

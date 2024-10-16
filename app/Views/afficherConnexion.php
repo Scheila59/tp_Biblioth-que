@@ -16,6 +16,7 @@
       <label for="password" class="form-label mt-4">Mot de passe</label>
       <input type="password" name="password" class="form-control" id="password" placeholder="Entrer votre mot de passe" autocomplete="off">
     </div>
+    <?= $csrfToken ?>
     <button type="submit" class="btn btn-primary">Envoyer</button>
   </fieldset>
 </form>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://bootswatch.com/5/sketchy/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
     <link rel="stylesheet" href="<?= SITE_URL ?>assets/css/style.css">
     <link rel="icon" type="image/png" href="/assets/favicons/favicon-48x48.png" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="<?= SITE_URL ?>assets/favicons/favicon.svg" />
@@ -32,11 +32,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= SITE_URL ?>livres">Livres</a>
                     </li>                    
-                    <?php if(!array_key_exists('utilisateur', $_SESSION)) : ?>
+                    <?php if (!array_key_exists('utilisateur', $_SESSION)) : ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= SITE_URL ?>login">Login</a>
                         </li>
-                        <?php else : ?>
+                    <?php else : ?>
                             <li class="nav-item">
                             <a class="nav-link" href="<?= SITE_URL ?>logout">Logout</a>
                         </li>
