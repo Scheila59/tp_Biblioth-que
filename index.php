@@ -57,6 +57,51 @@ try {
             case 'logout':
                 $utilisateurController->logout();
                 break;
+            case 'inscription':
+                if (empty($url[1])) {
+                    $utilisateurController->afficherInscription();
+                } elseif ($url[1] === 'submit') {
+                    $utilisateurController->inscriptionValidation();
+                }
+                break;
+            case 'admin':
+                if (!isset($url[1])) {
+                    // Page d'accueil de l'admin si nécessaire
+                    break;
+                }
+                switch ($url[1]) {
+                    case 'utilisateurs':
+                        if (!isset($url[2])) {
+                            $utilisateurController->listeUtilisateurs();
+                        } else {
+                            switch ($url[2]) {
+                                case 'modifier':
+                                    if (isset($url[3])) {
+                                        $utilisateurController->modifierUtilisateur((int)$url[3]);
+                                    } else {
+                                        throw new Exception("ID de l'utilisateur non spécifié");
+                                    }
+                                    break;
+                                case 'mettre-a-jour':
+                                    $utilisateurController->mettreAJourUtilisateur();
+                                    break;
+                                case 'supprimer':
+                                    if (isset($url[3])) {
+                                        $utilisateurController->supprimerUtilisateur((int)$url[3]);
+                                    } else {
+                                        throw new Exception("ID de l'utilisateur non spécifié");
+                                    }
+                                    break;
+                                default:
+                                    throw new Exception("Action non reconnue pour la gestion des utilisateurs");
+                            }
+                        }
+                        break;
+                    // ... autres cas pour d'autres fonctionnalités admin si nécessaire ...
+                    default:
+                        throw new Exception("Page d'administration non reconnue");
+                }
+                break;
             default:
                 throw new Exception("La page n'existe pas");
                 break;

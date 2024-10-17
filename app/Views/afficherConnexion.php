@@ -20,6 +20,7 @@
     <button type="submit" class="btn btn-primary">Envoyer</button>
   </fieldset>
 </form>
+<p>Pas encore de compte ? <a href="<?= SITE_URL ?>inscription/">Inscrivez-vous !</a></p>
 
 <?php
 $titre = 'Connexion';

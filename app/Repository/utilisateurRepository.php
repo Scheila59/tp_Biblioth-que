@@ -27,6 +27,15 @@ class UtilisateurRepository extends AbstractConnexion
             return $this->getUtilisateur(); // retourne l'utilisateur
         }
     }
+    public function addUtilisateur(string $identifiant, string $email, string $password) {
+        $req = "INSERT INTO utilisateur (identifiant, email, password, role, is_valide) 
+                VALUES (:identifiant, :email, :password, 'ROLE_USER', FALSE)";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindParam(':identifiant', $identifiant, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
 
 
     public function getUtilisateur(): Utilisateur
@@ -39,5 +48,49 @@ class UtilisateurRepository extends AbstractConnexion
     {
         $this->utilisateur = $utilisateur;
         return $this;
+    }
+
+    public function emailExists($email)
+    {
+        $req = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    public function getAllUtilisateurs()
+    {
+        $req = "SELECT * FROM utilisateur";
+        $stmt = $this->getConnexionBdd()->query($req);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUtilisateurById($id)
+    {
+        $req = "SELECT * FROM utilisateur WHERE id_utilisateur = :id";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function mettreAJourUtilisateur($id, $data)
+    {
+        $req = "UPDATE utilisateur SET identifiant = :identifiant, email = :email, role = :role WHERE id_utilisateur = :id";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':identifiant', $data['identifiant']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':role', $data['role']);
+        return $stmt->execute();
+    }
+
+    public function supprimerUtilisateur($id)
+    {
+        $req = "DELETE FROM utilisateur WHERE id_utilisateur = :id";
+        $stmt = $this->getConnexionBdd()->prepare($req);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }

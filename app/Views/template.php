@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -18,27 +18,32 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Navbar</a>
+            <a class="navbar-brand" href="/">Accueil</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Home
-                            <span class="visually-hidden">(current)</span>
-                        </a>
-                    </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="<?= SITE_URL ?>livres">Livres</a>
-                    </li>                    
-                    <?php if (!array_key_exists('utilisateur', $_SESSION)) : ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= SITE_URL ?>login">Login</a>
-                        </li>
-                    <?php else : ?>
+                    </li>
+                    <?php if (isset($_SESSION['utilisateur'])): ?>
+                        <!-- si l'utilisateur est administrateur -->
+                        <?php if ($_SESSION['utilisateur']['role'] === 'ROLE_ADMIN'): ?>
                             <li class="nav-item">
-                            <a class="nav-link" href="<?= SITE_URL ?>logout">Logout</a>
+                                <a class="nav-link" href="<?= SITE_URL ?>admin/utilisateurs">Gérer les utilisateurs</a>
+                            </li>
+                            <!-- Ajoutez d'autres liens d'administration ici si nécessaire -->
+                        <?php endif; ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= SITE_URL ?>logout">Déconnexion</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= SITE_URL ?>login">Connexion</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= SITE_URL ?>inscription">Inscription</a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -50,7 +55,6 @@
         <h1 class="rounded border border-dark p-2 text-center text-white bg-info"><?= $titre ?></h1>
         <div class="d-flex flex-column justify-content-center"> <?= $content ?></div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

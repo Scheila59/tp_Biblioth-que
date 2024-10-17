@@ -18,7 +18,7 @@ class LivreController
 
     public function __construct()
     {
- // constructeur
+        // constructeur
         $this->repositoryLivres = new livresRepository(); // on crée un objet de type livresRepository
         $this->validationDonnees = new ValidationDonnees(); // on crée un objet de type ValidationDonnees
         $this->utilisateurController = new UtilisateurController(); // on crée un objet de type UtilisateurController
@@ -29,8 +29,8 @@ class LivreController
         } elseif ($isUser) {
             $livresTab = $this->repositoryLivres->getLivresByIdUtilisateur($_SESSION['utilisateur']['id_utilisateur']);
         }  // else {
-            // header('location: ' . SITE_URL . 'login');
-            // exit;
+        // header('location: ' . SITE_URL . 'login');
+        // exit;
         // }
     }
 
@@ -48,7 +48,7 @@ class LivreController
 
     public function afficherUnLivre($idLivre)
     {
-    // fonction qui affiche un livre   
+        // fonction qui affiche un livre   
         $livre = $this->repositoryLivres->getLivreById($idLivre);
         if ($livre !== null) {
             require "../app/Views/afficherlivre.php";
@@ -71,9 +71,9 @@ class LivreController
         $this->utilisateurController->redirectLogin();
         $erreurs = $this->validationDonnees->valider([ // on valide les données
             //'titre' => ['min:3']
-            'titre' => ['match:/^[A-Z][a-zA-Z\- ]{3,25}$/'], // on valide le titre sous certaines conditions
+            'titre' => ['match:/^[A-Z][a-zA-Zà-ÿÀ-Ÿ\-\' ]{3,50}$/'], // on valide le titre sous certaines conditions
             'nbre-de-pages' => ['match:/^\d{1,10}$/'],  // on valide le nombre de pages sous certaines conditions
-            'text-alternatif' => ['match:/^[a-zA-Z.\-\'\"\s]{10,150}$/']    // on valide le texte alternatif sous certaines conditions
+            'text-alternatif' => ['match:/^[a-zA-Zà-ÿÀ-Ÿ.\-\'\"\s]{10,150}$/']    // on valide le texte alternatif sous certaines conditions
         ], $_POST);
 
         if (is_array($erreurs) && count($erreurs) > 0) { // si il y a des erreurs
@@ -94,7 +94,7 @@ class LivreController
 
     public function modifierLivre($idLivre)
     {
- // fonction qui permet de modifier un livre
+        // fonction qui permet de modifier un livre
         $this->utilisateurController->redirectLogin();
         $livre = $this->repositoryLivres->getLivreById($idLivre);
         $csrfToken = Csrf::token();
@@ -103,13 +103,13 @@ class LivreController
 
     public function validationModifierLivre()
     {
- // fonction qui valide les données de modification d'un livre
+        // fonction qui valide les données de modification d'un livre
         $this->utilisateurController->redirectLogin();
         $erreurs = $this->validationDonnees->valider([ // on valide les données
             //'titre' => ['min:3']
-            'titre' => ['match:/^[A-Z][a-zA-Z\- ]{3,50}$/'],
+            'titre' => ['match:/^[A-Z][a-zA-Zà-ÿÀ-Ÿ\-\' ]{3,50}$/'],
             'nbre-de-pages' => ['match:/^\d{1,10}$/'],
-            'text-lternatif' => ['match:/^[a-zA-Z.\-\'\"\s]{10,150}$/']
+            'text-lternatif' => ['match:/^[a-zA-Zà-ÿÀ-Ÿ.\-\'\"\s]{10,150}$/']
         ], $_POST);
 
         if (is_array($erreurs) && count($erreurs) > 0) { // si il y a des erreurs
@@ -143,7 +143,7 @@ class LivreController
 
     public function supprimerLivre($idLivre)
     {
- // fonction qui permet de supprimer un livre
+        // fonction qui permet de supprimer un livre
         $this->utilisateurController->redirectLogin();
         $livre = $this->repositoryLivres->getLivreById($idLivre);
         // Récupère le nom de l'image associée au livre à supprimer
@@ -164,13 +164,14 @@ class LivreController
         header('location: ' . SITE_URL . 'livres');
     }
 
-    public function getAllLivres() {
+    public function getAllLivres()
+    {
         if (!$this->utilisateurController->isRoleAdmin() || !$this->utilisateurController->isRoleUser()) {
             $this->repositoryLivres->setLivres([]);
-            $livresAll = $this->repositoryLivres->chargementLivresBdd();  
+            $livresAll = $this->repositoryLivres->chargementLivresBdd();
         } else {
             $livresAll = $this->repositoryLivres->getLivres();
-        }        
+        }
         require '../app/Views/accueil.php';
     }
 }

@@ -12,3 +12,6 @@ form {
 textarea {
     resize: none;
 }
+p {
+    text-align: center;
+}
